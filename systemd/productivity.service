@@ -1,15 +1,20 @@
-#Please read READ.ME
 [Unit]
-Description=Fun Productivity Guardian 
+Description=Productivity Guardian
+Documentation=https://github.com/KachanArtmee/linux-productivity-guardian
 After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/focus-enforcer
-Restart=always
+ExecStart=%h/.local/bin/productivity-guardian all
+Environment=GUARDIAN_CONFIG=%h/.config/productivity-guardian/guardian.conf
+Environment=GUARDIAN_LOG_TARGET=journald
+Restart=on-failure
 RestartSec=10
-#in the USER field, enter ur user(u can find out ur user by running whoami)
-User=USER
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX
 
 [Install]
 WantedBy=default.target
