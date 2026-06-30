@@ -1,0 +1,12 @@
+# Productivity Guardian safe example configuration
+
+SCAN_INTERVAL=600
+TERM_GRACE_PERIOD=10
+MODE=dry-run
+
+ALLOWED_ROOT=~
+
+PATH=~/.local/share/Steam/steamapps/common/dota 2 beta
+PATH=~/.local/share/Steam/steamapps/appmanifest_570.acf
+
+PROCESS=steam
