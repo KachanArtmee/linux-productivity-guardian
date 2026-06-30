@@ -1,0 +1,8 @@
+.git
+.gitignore
+.env
+CHANGELOG.md
+README.md
+tests
+systemd
+install.sh

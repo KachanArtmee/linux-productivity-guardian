@@ -1,0 +1,50 @@
+name: productivity-guardian
+
+x-guardian-common: &guardian-common
+  build:
+    context: .
+  image: productivity-guardian:2.0.0
+  init: true
+  restart: unless-stopped
+  read_only: true
+  network_mode: none
+  security_opt:
+    - no-new-privileges:true
+  configs:
+    - source: guardian-config
+      target: /etc/productivity-guardian/guardian.conf
+      mode: 0444
+  tmpfs:
+    - /tmp:size=1m,mode=1777
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+  stop_grace_period: 15s
+
+services:
+  guardian-files:
+    <<: *guardian-common
+    command: ["files"]
+    volumes:
+      - type: bind
+        source: ${GUARDIAN_HOST_HOME:?Set GUARDIAN_HOST_HOME in .env}
+        target: /host-home
+    cap_drop:
+      - ALL
+    cap_add:
+      - DAC_OVERRIDE
+
+  guardian-processes:
+    <<: *guardian-common
+    command: ["processes"]
+    pid: host
+    cap_drop:
+      - ALL
+    cap_add:
+      - KILL
+
+configs:
+  guardian-config:
+    file: ./configs/guardian.conf
